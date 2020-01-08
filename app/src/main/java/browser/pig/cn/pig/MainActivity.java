@@ -14,9 +14,11 @@ import browser.pig.cn.pig.bean.HomeSelect;
 import cn.my.library.ui.base.BaseActivity;
 
 public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHomeSelectClickListener {
-//    private int[]ds = {R.drawable.xiangmuxinxi,R.drawable.qiyexinxi,R.drawable.gongzuozu,R.drawable.gerenxinxi,R.drawable.wendangxiazai,R.drawable.xiehuigonggao};
-//
-//    private String[]ns = {"项目信息","企业信息","工作组","个人信息","文档下载","协会公告"};
+    private int[]ds = {R.drawable.icon_baidu,R.drawable.icon_xinlangshipin,R.drawable.icon_zhougongjiemeng,
+            R.drawable.icon_baozoumanhua,R.drawable.icon_mianfeixiaoshuo,R.drawable.icon_jinrifengyun,R.drawable.icon_teixuejunshi,
+    R.drawable.icon_zhuyouyou};
+
+    private String[]ns = {"百度","新浪视频","周公解梦","暴走漫画","免费小说","今日风云","铁血军事","猪悠悠"};
     private HomeSelectAdapter homeSelectAdapter;
     private List<HomeSelect> homeSelects;
     private RecyclerView rv_entrance;
@@ -25,12 +27,12 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         homeSelects = new ArrayList<>();
-//        for (int i = 0;i<ds.length;i++){
-//            HomeSelect homeSelect = new HomeSelect();
-//            homeSelect.setDrawableId(ds[i]);
-//            homeSelect.setName(ns[i]);
-//            homeSelects.add(homeSelect);
-//        }
+        for (int i = 0;i<ds.length;i++){
+            HomeSelect homeSelect = new HomeSelect();
+            homeSelect.setDrawableId(ds[i]);
+            homeSelect.setName(ns[i]);
+            homeSelects.add(homeSelect);
+        }
         homeSelectAdapter = new HomeSelectAdapter(this,homeSelects);
         homeSelectAdapter.setOnHomeSelectClickListener(this);
 
