@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.x5.OpenFileActivity">
+    <RelativeLayout
+        android:id="@+id/rl_titleback"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#FFF"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/vt_tv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+             android:text="返回"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/vt_tv_title"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:singleLine="true"-->
+            <!--android:lines="1"-->
+            <!--android:ellipsize="end"-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:gravity="center"-->
+            <!--android:textColor="#000000"-->
+            <!--android:textSize="16sp" />-->
+        <View
+            android:layout_width="match_parent"
+            android:background="#E5E5E5"
+            android:layout_alignParentBottom="true"
+            android:layout_height="0.75dp"
+
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_root">
+    </RelativeLayout>
+</LinearLayout>

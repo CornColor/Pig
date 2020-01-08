@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.yanzhenjie:permission-1.0.5">
+    <CLASSES>
+      <root url="jar://F:/Users/Administrator/caches/transforms-1/files-1.1/permission-1.0.5.aar/d467e9815c609e3cdaf71d10697f2e1a/jars/classes.jar!/" />
+      <root url="file://F:/Users/Administrator/caches/transforms-1/files-1.1/permission-1.0.5.aar/d467e9815c609e3cdaf71d10697f2e1a/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://F:/Users/Administrator/caches/modules-2/files-2.1/com.yanzhenjie/permission/1.0.5/38e2e8dd04593bf5d34c8a83834fe1dabfe428d9/permission-1.0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
