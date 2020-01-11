@@ -29,7 +29,8 @@
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".min.ModifyPasswordActivity" />
         <activity android:name=".register.FindPasswordActivity" />
-        <activity android:name=".min.MinActivity"></activity>
+        <activity android:name=".min.MinActivity" />
+        <activity android:name=".ShowActivity"></activity>
     </application>
 
 </manifest>
