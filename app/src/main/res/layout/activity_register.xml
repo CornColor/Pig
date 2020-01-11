@@ -38,7 +38,7 @@
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
+        android:layout_marginLeft="39dp"
         android:layout_marginTop="24dp"
         android:text="注册浏览器"
         android:textColor="#de000000"

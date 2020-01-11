@@ -1,0 +1,192 @@
+package browser.pig.cn.pig.register;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import browser.pig.cn.pig.R;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.my.library.ui.base.BaseActivity;
+import cn.my.library.ui.base.WeakReferenceHandle;
+
+public class FindPasswordActivity extends BaseActivity implements Handler.Callback{
+
+    @Bind(R.id.iv_close)
+    ImageView ivClose;
+    @Bind(R.id.relativeLayout)
+    RelativeLayout relativeLayout;
+    @Bind(R.id.tv_1)
+    TextView tv1;
+    @Bind(R.id.rl_001)
+    RelativeLayout rl001;
+    @Bind(R.id.tv_2)
+    TextView tv2;
+    @Bind(R.id.rl_002)
+    RelativeLayout rl002;
+    @Bind(R.id.tv_3)
+    TextView tv3;
+    @Bind(R.id.rl_003)
+    RelativeLayout rl003;
+    @Bind(R.id.linearLayout)
+    LinearLayout linearLayout;
+    @Bind(R.id.view)
+    View view;
+    @Bind(R.id.rl_01)
+    RelativeLayout rl01;
+    @Bind(R.id.rl_02)
+    RelativeLayout rl02;
+    @Bind(R.id.rl_03)
+    RelativeLayout rl03;
+    @Bind(R.id.linearLayout2)
+    LinearLayout linearLayout2;
+    @Bind(R.id.relativeLayout2)
+    RelativeLayout relativeLayout2;
+    @Bind(R.id.et_phone)
+    EditText etPhone;
+    @Bind(R.id.et_code)
+    EditText etCode;
+    @Bind(R.id.tv_get_code)
+    TextView tvGetCode;
+    @Bind(R.id.rl_code)
+    RelativeLayout rlCode;
+    @Bind(R.id.ll_1)
+    LinearLayout ll1;
+    @Bind(R.id.et_password)
+    EditText etPassword;
+    @Bind(R.id.et_q_password)
+    EditText etQPassword;
+    @Bind(R.id.ll_2)
+    LinearLayout ll2;
+    @Bind(R.id.ll_3)
+    LinearLayout ll3;
+    @Bind(R.id.linearLayout3)
+    RelativeLayout linearLayout3;
+    @Bind(R.id.btn_next)
+    Button btnNext;
+
+    private List<TextView> t_s;
+    private List<View> v_s;
+    private List<View> v_ss;
+
+    private int postion = 0;
+    private boolean offs = true;
+    private WeakReferenceHandle handler = new WeakReferenceHandle(this);
+    Runnable sendable = new Runnable() {
+        @Override
+        public void run() {
+            int a = 60;
+            while (-1 < a && offs) {
+                try {
+                    Thread.sleep(1000);
+                    Message message = new Message();
+                    message.arg1 = a;
+                    handler.sendMessage(message);
+                    a--;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_find_password);
+        ButterKnife.bind(this);
+        t_s= new ArrayList<>();
+        t_s.add(tv1);
+        t_s.add(tv2);
+        t_s.add(tv3);
+
+        v_s = new ArrayList<>();
+        v_s.add(rl01);
+        v_s.add(rl02);
+        v_s.add(rl03);
+
+        v_ss = new ArrayList<>();
+        v_ss.add(ll1);
+        v_ss.add(ll2);
+        v_ss.add(ll3);
+
+    }
+
+    @Override
+    public void initData() {
+//        tv_code.setClickable(false);
+//        new Thread(sendable).start();
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initPresenter() {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
+
+    @OnClick({ R.id.tv_get_code, R.id.btn_next})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_get_code:
+                break;
+            case R.id.btn_next:
+                break;
+        }
+    }
+    private void setPostion(int position){
+        for (int i = 0;i < v_s.size();i++){
+            TextView textView = t_s.get(i);
+            View view = v_s.get(i);
+            View view1 = v_ss.get(i);
+             if(position == i){
+                 textView.setTextColor(Color.parseColor("#FE9C2D"));
+                 view.setVisibility(View.VISIBLE);
+                 view1.setVisibility(View.VISIBLE);
+             }else {
+                 textView.setTextColor(Color.parseColor("#ffcccccc"));
+                 view.setVisibility(View.GONE);
+                 view1.setVisibility(View.GONE);
+             }
+        }
+        this.postion = position;
+
+
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+//        if (tv_code != null) {
+//            tv_code.setText(msg.arg1 + "s");
+//            if (msg.arg1 == 0) {
+//                tv_code.setText("获取验证码");
+//                tv_code.setClickable(true);
+//            }
+//            if (!offs) {
+//                tv_code.setText("获取验证码");
+//                tv_code.setClickable(true);
+//            }
+//        }
+        return false;
+    }
+}

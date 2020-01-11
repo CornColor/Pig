@@ -27,7 +27,8 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".register.RegisterActivity" />
         <activity android:name=".login.LoginActivity" />
-        <activity android:name=".min.ModifyPasswordActivity"></activity>
+        <activity android:name=".min.ModifyPasswordActivity" />
+        <activity android:name=".register.FindPasswordActivity"></activity>
     </application>
 
 </manifest>
