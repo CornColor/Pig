@@ -31,17 +31,17 @@ public class MinActivity extends BaseActivity {
         ButterKnife.bind(this);
         String phone = SPUtils.getInstance().getString("phone");
         mPhone.setText(getStarMobile(phone));
-
-    }
-
-    @Override
-    public void initData() {
         if (!SPUtils.getInstance().contains("cache")) {
             Random random = new Random();
             float num = random.nextFloat() * 10;
             SPUtils.getInstance().put("cache", num);
             tvCache.setText(num+"M");
         }
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     public static String getStarMobile(String mobile) {

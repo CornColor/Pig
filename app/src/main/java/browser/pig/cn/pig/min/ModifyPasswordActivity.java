@@ -55,6 +55,7 @@ public class ModifyPasswordActivity extends BaseActivity {
     }
     private void modify(String phone, String password, String pre_password) {
         OkGo.<BaseBean>post(MODIFY_PASSWORD)
+                .headers("authkey",SPUtils.getInstance().getString("token"))
                 .params("phone", phone)
                 .params("password", password)
                 .params("pre_password", pre_password)

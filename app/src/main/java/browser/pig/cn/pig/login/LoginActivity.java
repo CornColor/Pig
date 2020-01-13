@@ -98,29 +98,28 @@ public class LoginActivity extends BaseActivity {
     @OnClick({R.id.tv_register, R.id.tv_wangji_password, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_register:
-            {
+            case R.id.tv_register: {
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
             }
-                break;
-            case R.id.tv_wangji_password:{
+            break;
+            case R.id.tv_wangji_password: {
                 Intent intent = new Intent(this, FindPasswordActivity.class);
                 startActivity(intent);
             }
-                break;
+            break;
             case R.id.btn_login:
                 String phone = etPhone.getText().toString();
-                if(StringUtils.isEmpty(phone)||phone.length()<11){
+                if (StringUtils.isEmpty(phone) || phone.length() < 11) {
                     showToast("请输入正确的手机号码");
                     return;
                 }
                 String password = etPassword.getText().toString();
-                if(StringUtils.isEmpty(password)){
+                if (StringUtils.isEmpty(password)) {
                     showToast("请输入密码");
                     return;
                 }
-                login(phone,password);
+                login(phone, password);
                 break;
         }
     }
@@ -129,5 +128,10 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.close)
+    public void onViewClicked() {
+        finish();
     }
 }
