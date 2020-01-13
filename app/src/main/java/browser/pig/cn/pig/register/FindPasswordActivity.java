@@ -1,5 +1,6 @@
 package browser.pig.cn.pig.register;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,15 +13,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.request.base.Request;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import browser.pig.cn.pig.R;
+import browser.pig.cn.pig.login.LoginActivity;
+import browser.pig.cn.pig.net.CommonCallback;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.my.library.net.BaseBean;
 import cn.my.library.ui.base.BaseActivity;
 import cn.my.library.ui.base.WeakReferenceHandle;
+
+import static browser.pig.cn.pig.net.ApiSearvice.FIND_PASSWORD;
+import static browser.pig.cn.pig.net.ApiSearvice.REGISTER;
+import static browser.pig.cn.pig.net.ApiSearvice.SEND_FIND_PASSWORD_CODE;
+import static browser.pig.cn.pig.net.ApiSearvice.SEND_REGISTER_CODE;
 
 public class FindPasswordActivity extends BaseActivity implements Handler.Callback{
 
@@ -83,6 +95,7 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
 
     private int postion = 0;
     private boolean offs = true;
+
     private WeakReferenceHandle handler = new WeakReferenceHandle(this);
     Runnable sendable = new Runnable() {
         @Override
@@ -121,6 +134,8 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
         v_ss.add(ll2);
         v_ss.add(ll3);
 
+
+
     }
 
     @Override
@@ -149,11 +164,136 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_get_code:
+                getCode();
                 break;
             case R.id.btn_next:
+                switch (postion){
+                    case 0:
+                        String phone = etPhone.getText().toString();
+                        if (phone == null || phone.length() < 11) {
+                            showToast("请输入正确格式的手机号码");
+                            return;
+                        }
+                        String code = etCode.getText().toString();
+                        if (code == null || code.length() <= 0) {
+                            showToast("请输入正确格式的手机号码");
+                            return;
+                        }
+                        setPostion(1);
+                        break;
+                    case 1: {
+                        String password = etPassword.getText().toString();
+                        if (password == null || password.length() <= 0) {
+                            showToast("请输入密码");
+                            return;
+                        }
+                        String qpassword = etQPassword.getText().toString();
+                        if (qpassword == null || qpassword.length() <= 0) {
+                            showToast("请输入确认密码");
+                            return;
+                        }
+                        if (!password.equals(qpassword)) {
+                            showToast("两次输入的密码不一致");
+                            return;
+                        }
+                         phone = etPhone.getText().toString();
+                        if (phone == null || phone.length() < 11) {
+                            showToast("请输入正确格式的手机号码");
+                            return;
+                        }
+
+                         code = etCode.getText().toString();
+                        if (code == null || code.length() < 0) {
+                            showToast("请输入短信验证码");
+                            return;
+                        }
+
+                        findPassword(phone, password, code);
+                    }
+                        break;
+                }
                 break;
         }
     }
+
+
+
+    //获取验证码
+    private void getCode() {
+        String phone = etPhone.getText().toString();
+        if (phone == null || phone.length() < 11) {
+            showToast("请输入正确格式的手机号码");
+            return;
+        }
+        OkGo.<BaseBean>post(SEND_FIND_PASSWORD_CODE)
+                .params("phone", phone)
+                .execute(new CommonCallback<BaseBean>(BaseBean.class) {
+                    @Override
+                    public void onStart(Request<BaseBean, ? extends Request> request) {
+                        super.onStart(request);
+                        showProgressDialog("发送短信验证码...");
+                    }
+
+                    @Override
+                    public void onFailure(String code, String s) {
+                        showToast(s);
+
+                    }
+
+                    @Override
+                    public void onSuccess(BaseBean baseBean) {
+                        tvGetCode.setClickable(false);
+                        new Thread(sendable).start();
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        cancelProgressDialog();
+                    }
+                });
+
+
+    }
+
+    private void findPassword(String phone, String password, String code) {
+        OkGo.<BaseBean>post(FIND_PASSWORD)
+                .params("phone", phone)
+                .params("password", password)
+                .params("code", code)
+                .execute(new CommonCallback<BaseBean>(BaseBean.class) {
+                    @Override
+                    public void onStart(Request<BaseBean, ? extends Request> request) {
+                        super.onStart(request);
+                        showProgressDialog("");
+                    }
+
+                    @Override
+                    public void onFailure(String code, String s) {
+                        showToast(s);
+
+                    }
+
+                    @Override
+                    public void onSuccess(BaseBean baseBean) {
+                        setPostion(2);
+                        showToast("找回密码成功");
+                        Intent intent = new Intent(FindPasswordActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        cancelProgressDialog();
+                    }
+                });
+
+    }
+
     private void setPostion(int position){
         for (int i = 0;i < v_s.size();i++){
             TextView textView = t_s.get(i);

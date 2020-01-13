@@ -145,7 +145,7 @@ public class RegisterActivity extends BaseActivity implements Handler.Callback {
     //获取验证码
     private void getCode() {
         String phone = etPhone.getText().toString();
-        if (phone == null || phone.length() < 11) {
+        if (phone == null || phone.length() <= 0) {
             showToast("请输入正确格式的手机号码");
             return;
         }
@@ -201,8 +201,10 @@ public class RegisterActivity extends BaseActivity implements Handler.Callback {
 
                     @Override
                     public void onSuccess(BaseBean baseBean) {
+                        showToast("注册成功");
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(intent);
+                        finish();
 
                     }
 
