@@ -127,8 +127,9 @@ public class RegisterActivity extends BaseActivity implements Handler.Callback {
                     showToast("请输入短信验证码");
                     return;
                 }
+                String invitation_code = etYCode.getText().toString();
 
-                register(phone, password, code);
+                register(phone, password, code,invitation_code);
 
 
             }
@@ -181,11 +182,12 @@ public class RegisterActivity extends BaseActivity implements Handler.Callback {
 
     }
 
-    private void register(String phone, String password, String code) {
+    private void register(String phone, String password, String code,String invitation_code) {
         OkGo.<BaseBean>post(REGISTER)
                 .params("phone", phone)
                 .params("password", password)
                 .params("code", code)
+                .params("invitation_code",invitation_code)
                 .execute(new CommonCallback<BaseBean>(BaseBean.class) {
                     @Override
                     public void onStart(Request<BaseBean, ? extends Request> request) {
@@ -221,5 +223,10 @@ public class RegisterActivity extends BaseActivity implements Handler.Callback {
     public void onViewClicked() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.close)
+    public void onClick() {
+        finish();
     }
 }

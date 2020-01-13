@@ -36,6 +36,14 @@ public interface ApiSearvice {
      * 修改密码
      */
     String MODIFY_PASSWORD = HOST+"emp/updatepassword";
+    /**
+     * 判断版本
+     */
+    String Y_CODE = HOST+"system/androidversion";
+    /**
+     * 更新地址
+     */
+    String UPDATA_ADDRESS = HOST+"system/androidaddress";
 
 
 

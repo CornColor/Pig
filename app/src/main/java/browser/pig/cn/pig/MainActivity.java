@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.request.base.Request;
 import com.yanzhenjie.permission.Permission;
 
 import java.io.File;
@@ -24,16 +26,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import browser.pig.cn.pig.adapter.HomeSelectAdapter;
+import browser.pig.cn.pig.bean.AppAdressBean;
+import browser.pig.cn.pig.bean.BanBenBean;
 import browser.pig.cn.pig.bean.HomeSelect;
 import browser.pig.cn.pig.login.LoginActivity;
 import browser.pig.cn.pig.min.MinActivity;
+import browser.pig.cn.pig.net.CommonCallback;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.my.library.net.BaseBean;
 import cn.my.library.ui.base.BaseActivity;
+import cn.my.library.utils.util.AppUtils;
 import cn.my.library.utils.util.FilePathUtil;
 import cn.my.library.utils.util.SPUtils;
 import cn.my.library.utils.util.StringUtils;
 import freemarker.template.utility.StringUtil;
+
+import static browser.pig.cn.pig.net.ApiSearvice.SEND_REGISTER_CODE;
+import static browser.pig.cn.pig.net.ApiSearvice.UPDATA_ADDRESS;
+import static browser.pig.cn.pig.net.ApiSearvice.Y_CODE;
 
 public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHomeSelectClickListener {
     private int[] ds = {R.drawable.icon_baidu, R.drawable.icon_xinlangshipin, R.drawable.icon_zhougongjiemeng,
@@ -108,7 +119,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             return;
         }
         FileDownloader.getImpl().create(path)
-                .setPath(FilePathUtil.getFilePath(this, "apk") + File.separator + "zhixun" + System.currentTimeMillis() + ".apk")
+                .setPath(FilePathUtil.getFilePath(this, "apk") + File.separator + "pig" + System.currentTimeMillis() + ".apk")
                 .setListener(new FileDownloadListener() {
                     @Override
                     protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
@@ -179,6 +190,48 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     }
 
+    private void banben(){
+        OkGo.<BanBenBean>post(Y_CODE)
+                .headers("authkey",SPUtils.getInstance().getString("token"))
+                .execute(new CommonCallback<BanBenBean>(BanBenBean.class) {
+
+                    @Override
+                    public void onFailure(String code, String s) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(BanBenBean banBenBean) {
+                        String banben = banBenBean.getData().getData();
+                        if(!AppUtils.getAppVersionName().equals(banben)){
+                           updata();
+                        }
+
+                    }
+                });
+
+
+    }
+
+
+    private void updata(){
+        OkGo.<AppAdressBean>post(UPDATA_ADDRESS)
+                .headers("authkey",SPUtils.getInstance().getString("token"))
+                .execute(new CommonCallback<AppAdressBean>(AppAdressBean.class) {
+
+                    @Override
+                    public void onFailure(String code, String s) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(AppAdressBean banBenBean) {
+                        String banben = banBenBean.getData().getData();
+                        fileDownLoad(banben);
+
+                    }
+                });
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

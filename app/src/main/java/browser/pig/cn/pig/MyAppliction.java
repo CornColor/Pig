@@ -2,6 +2,7 @@ package browser.pig.cn.pig;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
@@ -26,6 +27,12 @@ public class MyAppliction extends Application implements QbSdk.PreInitCallback{
         registerLifecycle();
         FileDownloader.setup(this);
         QbSdk.initX5Environment(this,this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     /**
