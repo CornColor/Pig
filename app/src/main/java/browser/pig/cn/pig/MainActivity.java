@@ -12,7 +12,14 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.liulishuo.filedownloader.BaseDownloadTask;
+import com.liulishuo.filedownloader.FileDownloadListener;
+import com.liulishuo.filedownloader.FileDownloader;
+import com.yanzhenjie.permission.Permission;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +30,10 @@ import browser.pig.cn.pig.min.MinActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.my.library.ui.base.BaseActivity;
+import cn.my.library.utils.util.FilePathUtil;
 import cn.my.library.utils.util.SPUtils;
+import cn.my.library.utils.util.StringUtils;
+import freemarker.template.utility.StringUtil;
 
 public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHomeSelectClickListener {
     private int[] ds = {R.drawable.icon_baidu, R.drawable.icon_xinlangshipin, R.drawable.icon_zhougongjiemeng,
@@ -87,6 +97,49 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     @Override
     public void initData() {
+        requestPermission(Permission.Group.STORAGE,Permission.Group.CAMERA);
+    }
+
+    private void fileDownLoad(String path) {
+        if(StringUtils.isEmpty(path)){
+
+            showToast("下载安装包失败");
+            finish();
+            return;
+        }
+        FileDownloader.getImpl().create(path)
+                .setPath(FilePathUtil.getFilePath(this, "apk") + File.separator + "zhixun" + System.currentTimeMillis() + ".apk")
+                .setListener(new FileDownloadListener() {
+                    @Override
+                    protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
+                    }
+
+                    @Override
+                    protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
+                    }
+
+                    @Override
+                    protected void completed(BaseDownloadTask task) {
+
+                    }
+
+                    @Override
+                    protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
+                    }
+
+                    @Override
+                    protected void error(BaseDownloadTask task, Throwable e) {
+
+                    }
+
+                    @Override
+                    protected void warn(BaseDownloadTask task) {
+
+                    }
+                }).start();
 
     }
     /**
