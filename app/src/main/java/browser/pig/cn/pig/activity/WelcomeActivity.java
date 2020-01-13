@@ -47,12 +47,7 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case MSG_FINISH_LAUNCHERACTIVITY:
-                if(SPUtils.getInstance().contains("token")){
-                    toMainActivity();
-                }else {
-                    toLoginActivity();
-                }
-
+                toMainActivity();
                 break;
 
             default:

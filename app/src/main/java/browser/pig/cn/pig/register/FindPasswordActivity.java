@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import cn.my.library.net.BaseBean;
 import cn.my.library.ui.base.BaseActivity;
 import cn.my.library.ui.base.WeakReferenceHandle;
+import cn.my.library.utils.util.SPUtils;
 
 import static browser.pig.cn.pig.net.ApiSearvice.FIND_PASSWORD;
 import static browser.pig.cn.pig.net.ApiSearvice.REGISTER;
@@ -279,7 +280,11 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
                     public void onSuccess(BaseBean baseBean) {
                         setPostion(2);
                         showToast("找回密码成功");
+                        SPUtils.getInstance().remove("token");
+                        SPUtils.getInstance().remove("phone");
+                        SPUtils.getInstance().remove("id");
                         Intent intent = new Intent(FindPasswordActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
 

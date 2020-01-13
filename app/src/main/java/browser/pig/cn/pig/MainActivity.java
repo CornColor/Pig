@@ -18,10 +18,12 @@ import java.util.List;
 
 import browser.pig.cn.pig.adapter.HomeSelectAdapter;
 import browser.pig.cn.pig.bean.HomeSelect;
+import browser.pig.cn.pig.login.LoginActivity;
 import browser.pig.cn.pig.min.MinActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.my.library.ui.base.BaseActivity;
+import cn.my.library.utils.util.SPUtils;
 
 public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHomeSelectClickListener {
     private int[] ds = {R.drawable.icon_baidu, R.drawable.icon_xinlangshipin, R.drawable.icon_zhougongjiemeng,
@@ -132,9 +134,13 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     @OnClick(R.id.iv_geren)
     public void onViewClicked() {
-        Intent intent = new Intent(this, MinActivity.class);
-        startActivity(intent);
-
+        if(SPUtils.getInstance().contains("token")){
+            Intent intent = new Intent(this, MinActivity.class);
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
 
     }
 }
