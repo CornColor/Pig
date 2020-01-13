@@ -1,9 +1,17 @@
 package browser.pig.cn.pig;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +29,13 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             R.drawable.icon_zhuyouyou};
 
     private String[] ns = {"百度", "新浪视频", "周公解梦", "暴走漫画", "免费小说", "今日风云", "铁血军事", "猪悠悠"};
+    private String[] urls = {"https://www.baidu.com", "https://video.sina.cn/", "https://m.xzw.com/jiemeng/",
+            "http://baozoumanhua.com/", "http://www.quanshuwang.com", "http://top.baidu.com", "https://m.tiexue.net",
+            "http://izyy.hbyundao.com/zhuyouyouclient/index.html"};
     private HomeSelectAdapter homeSelectAdapter;
     private List<HomeSelect> homeSelects;
     private RecyclerView rv_entrance;
+    private EditText et_search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +47,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             HomeSelect homeSelect = new HomeSelect();
             homeSelect.setDrawableId(ds[i]);
             homeSelect.setName(ns[i]);
+            homeSelect.setUrl(urls[i]);
             homeSelects.add(homeSelect);
         }
         homeSelectAdapter = new HomeSelectAdapter(this, homeSelects);
@@ -43,12 +56,46 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
         rv_entrance = findViewById(R.id.rv_entrance);
         rv_entrance.setLayoutManager(new GridLayoutManager(this, 4));
         rv_entrance.setAdapter(homeSelectAdapter);
+        et_search = findViewById(R.id.et_search);
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //点击搜索的时候隐藏软键盘
+                    hideKeyboard(et_search);
+                    // 在这里写搜索的操作,一般都是网络请求数据
+                    try {
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        Uri content_url = Uri.parse("https://www.baidu.com/s?wd="+et_search.getText().toString());//此处填链接
+                        intent.setData(content_url);
+                        startActivity(intent);
+
+                    }catch (Exception e){
+
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
     }
 
     @Override
     public void initData() {
 
+    }
+    /**
+     * 隐藏软键盘
+     * @param  :上下文
+     * @param view    :一般为EditText
+     */
+    public void hideKeyboard(View view) {
+        InputMethodManager manager = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -63,6 +110,17 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     @Override
     public void onHomeSelect(int position) {
+        try {
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
+            intent.setData(content_url);
+            startActivity(intent);
+
+        }catch (Exception e){
+
+        }
+
 
     }
 

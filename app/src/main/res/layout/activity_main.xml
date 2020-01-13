@@ -100,6 +100,8 @@
                    android:hint="搜索或输入网址"
                    android:layout_marginLeft="8dp"
                    android:lines="1"
+                   android:imeOptions="actionSearch"
+                   android:inputType="text"
                    android:layout_toRightOf="@+id/iv_search"
                    android:background="@null"
                    android:layout_marginRight="11dp"
