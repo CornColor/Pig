@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import browser.pig.cn.pig.MainActivity;
 import browser.pig.cn.pig.R;
+import browser.pig.cn.pig.login.LoginActivity;
 import cn.my.library.other.WeakReferenceHandle;
 import cn.my.library.ui.base.BaseActivity;
 import cn.my.library.utils.util.SPUtils;
@@ -46,12 +47,11 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case MSG_FINISH_LAUNCHERACTIVITY:
-                toMainActivity();
-//                if(SPUtils.getInstance().contains("token")){
-//                    toMainActivity();
-//                }else {
-//                    toLoginActivity();
-//                }
+                if(SPUtils.getInstance().contains("token")){
+                    toMainActivity();
+                }else {
+                    toLoginActivity();
+                }
 
                 break;
 
@@ -76,8 +76,8 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     }
     private void toLoginActivity(){
 //        //跳转到LoginActivity，并结束当前的LauncherActivity
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
