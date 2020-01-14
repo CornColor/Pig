@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -113,9 +114,6 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     private void fileDownLoad(String path) {
         if(StringUtils.isEmpty(path)){
-
-            showToast("下载安装包失败");
-            finish();
             return;
         }
         FileDownloader.getImpl().create(path)
@@ -133,6 +131,14 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
                     @Override
                     protected void completed(BaseDownloadTask task) {
+                        try{
+                            if(!StringUtils.isEmpty(task.getPath())){
+                                AppUtils.installApp(task.getPath());
+                            }
+                        }catch (Exception e){
+
+                        }
+
 
                     }
 
@@ -171,7 +177,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     @Override
     public void initPresenter() {
-
+        banben();
     }
 
     @Override
@@ -191,19 +197,24 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
     }
 
     private void banben(){
+        if(!SPUtils.getInstance().contains("token")){
+            return;
+        }
         OkGo.<BanBenBean>post(Y_CODE)
                 .headers("authkey",SPUtils.getInstance().getString("token"))
                 .execute(new CommonCallback<BanBenBean>(BanBenBean.class) {
 
                     @Override
                     public void onFailure(String code, String s) {
+                      showToast(s);
 
                     }
 
                     @Override
                     public void onSuccess(BanBenBean banBenBean) {
                         String banben = banBenBean.getData().getData();
-                        if(!AppUtils.getAppVersionName().equals(banben)){
+                        String appVersionName = AppUtils.getAppVersionName();
+                        if(!appVersionName.equals(banben)){
                            updata();
                         }
 
@@ -213,6 +224,11 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        banben();
+    }
 
     private void updata(){
         OkGo.<AppAdressBean>post(UPDATA_ADDRESS)
