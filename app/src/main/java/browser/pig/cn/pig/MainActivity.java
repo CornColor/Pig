@@ -105,6 +105,13 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             }
         });
 
+        int action = getIntent().getIntExtra("action",1);
+        if(action == 100){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
+
     }
 
     @Override
@@ -182,14 +189,20 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     @Override
     public void onHomeSelect(int position) {
-        try {
-            Intent intent = new Intent();
-            intent.setAction("android.intent.action.VIEW");
-            Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
-            intent.setData(content_url);
+        if(!SPUtils.getInstance().contains("token")){
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        }else {
+            try {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
+                intent.setData(content_url);
+                startActivity(intent);
 
-        }catch (Exception e){
+            }catch (Exception e){
+
+            }
 
         }
 

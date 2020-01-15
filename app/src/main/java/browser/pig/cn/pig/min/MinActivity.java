@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import browser.pig.cn.pig.MainActivity;
 import browser.pig.cn.pig.R;
 import browser.pig.cn.pig.ShowActivity;
 import browser.pig.cn.pig.login.LoginActivity;
@@ -101,7 +102,7 @@ public class MinActivity extends BaseActivity {
                 SPUtils.getInstance().remove("token");
                 SPUtils.getInstance().remove("phone");
                 SPUtils.getInstance().remove("id");
-                Intent intent = new Intent(this, LoginActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();

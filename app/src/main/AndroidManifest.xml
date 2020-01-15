@@ -28,13 +28,32 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".register.RegisterActivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".min.ModifyPasswordActivity" />
-        <activity android:name=".register.FindPasswordActivity" />
-        <activity android:name=".min.MinActivity" />
-        <activity android:name=".ShowActivity"></activity>
+        <activity android:name=".register.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
+        <activity android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
+        <activity android:name=".min.ModifyPasswordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
+        <activity android:name=".register.FindPasswordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
+        <activity android:name=".min.MinActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
+        <activity android:name=".ShowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            ></activity>
     </application>
 
 </manifest>

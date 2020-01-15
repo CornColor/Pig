@@ -19,6 +19,7 @@ import com.lzy.okgo.request.base.Request;
 import java.util.ArrayList;
 import java.util.List;
 
+import browser.pig.cn.pig.MainActivity;
 import browser.pig.cn.pig.R;
 import browser.pig.cn.pig.login.LoginActivity;
 import browser.pig.cn.pig.net.CommonCallback;
@@ -31,11 +32,9 @@ import cn.my.library.ui.base.WeakReferenceHandle;
 import cn.my.library.utils.util.SPUtils;
 
 import static browser.pig.cn.pig.net.ApiSearvice.FIND_PASSWORD;
-import static browser.pig.cn.pig.net.ApiSearvice.REGISTER;
 import static browser.pig.cn.pig.net.ApiSearvice.SEND_FIND_PASSWORD_CODE;
-import static browser.pig.cn.pig.net.ApiSearvice.SEND_REGISTER_CODE;
 
-public class FindPasswordActivity extends BaseActivity implements Handler.Callback{
+public class FindPasswordActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.iv_close)
     ImageView ivClose;
@@ -90,6 +89,7 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
     @Bind(R.id.btn_next)
     Button btnNext;
 
+
     private List<TextView> t_s;
     private List<View> v_s;
     private List<View> v_ss;
@@ -115,12 +115,13 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_password);
         ButterKnife.bind(this);
-        t_s= new ArrayList<>();
+        t_s = new ArrayList<>();
         t_s.add(tv1);
         t_s.add(tv2);
         t_s.add(tv3);
@@ -136,13 +137,11 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
         v_ss.add(ll3);
 
 
-
     }
 
     @Override
     public void initData() {
-//        tv_code.setClickable(false);
-//        new Thread(sendable).start();
+
     }
 
     @Override
@@ -161,14 +160,14 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
         ButterKnife.unbind(this);
     }
 
-    @OnClick({ R.id.tv_get_code, R.id.btn_next})
+    @OnClick({R.id.tv_get_code, R.id.btn_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_get_code:
                 getCode();
                 break;
             case R.id.btn_next:
-                switch (postion){
+                switch (postion) {
                     case 0:
                         String phone = etPhone.getText().toString();
                         if (phone == null || phone.length() < 11) {
@@ -197,13 +196,13 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
                             showToast("两次输入的密码不一致");
                             return;
                         }
-                         phone = etPhone.getText().toString();
+                        phone = etPhone.getText().toString();
                         if (phone == null || phone.length() < 11) {
                             showToast("请输入正确格式的手机号码");
                             return;
                         }
 
-                         code = etCode.getText().toString();
+                        code = etCode.getText().toString();
                         if (code == null || code.length() < 0) {
                             showToast("请输入短信验证码");
                             return;
@@ -211,12 +210,11 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
 
                         findPassword(phone, password, code);
                     }
-                        break;
+                    break;
                 }
                 break;
         }
     }
-
 
 
     //获取验证码
@@ -283,8 +281,9 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
                         SPUtils.getInstance().remove("token");
                         SPUtils.getInstance().remove("phone");
                         SPUtils.getInstance().remove("id");
-                        Intent intent = new Intent(FindPasswordActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Intent intent = new Intent(FindPasswordActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("action",100);
                         startActivity(intent);
                         finish();
 
@@ -299,20 +298,20 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
 
     }
 
-    private void setPostion(int position){
-        for (int i = 0;i < v_s.size();i++){
+    private void setPostion(int position) {
+        for (int i = 0; i < v_s.size(); i++) {
             TextView textView = t_s.get(i);
             View view = v_s.get(i);
             View view1 = v_ss.get(i);
-             if(position == i){
-                 textView.setTextColor(Color.parseColor("#FE9C2D"));
-                 view.setVisibility(View.VISIBLE);
-                 view1.setVisibility(View.VISIBLE);
-             }else {
-                 textView.setTextColor(Color.parseColor("#ffcccccc"));
-                 view.setVisibility(View.GONE);
-                 view1.setVisibility(View.GONE);
-             }
+            if (position == i) {
+                textView.setTextColor(Color.parseColor("#FE9C2D"));
+                view.setVisibility(View.VISIBLE);
+                view1.setVisibility(View.VISIBLE);
+            } else {
+                textView.setTextColor(Color.parseColor("#ffcccccc"));
+                view.setVisibility(View.GONE);
+                view1.setVisibility(View.GONE);
+            }
         }
         this.postion = position;
 
@@ -321,17 +320,22 @@ public class FindPasswordActivity extends BaseActivity implements Handler.Callba
 
     @Override
     public boolean handleMessage(Message msg) {
-//        if (tv_code != null) {
-//            tv_code.setText(msg.arg1 + "s");
-//            if (msg.arg1 == 0) {
-//                tv_code.setText("获取验证码");
-//                tv_code.setClickable(true);
-//            }
-//            if (!offs) {
-//                tv_code.setText("获取验证码");
-//                tv_code.setClickable(true);
-//            }
-//        }
+        if (tvGetCode != null) {
+            tvGetCode.setText(msg.arg1 + "s");
+            if (msg.arg1 == 0) {
+                tvGetCode.setText("获取验证码");
+                tvGetCode.setClickable(true);
+            }
+            if (!offs) {
+                tvGetCode.setText("获取验证码");
+                tvGetCode.setClickable(true);
+            }
+        }
         return false;
+    }
+
+    @OnClick(R.id.iv_close)
+    public void onViewClicked() {
+        finish();
     }
 }

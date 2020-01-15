@@ -8,6 +8,7 @@ import android.widget.EditText;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.request.base.Request;
 
+import browser.pig.cn.pig.MainActivity;
 import browser.pig.cn.pig.R;
 import browser.pig.cn.pig.login.LoginActivity;
 import browser.pig.cn.pig.net.CommonCallback;
@@ -78,8 +79,9 @@ public class ModifyPasswordActivity extends BaseActivity {
                         SPUtils.getInstance().remove("token");
                         SPUtils.getInstance().remove("phone");
                         SPUtils.getInstance().remove("id");
-                        Intent intent = new Intent(ModifyPasswordActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(ModifyPasswordActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("action",100);
                         startActivity(intent);
                         finish();
                     }

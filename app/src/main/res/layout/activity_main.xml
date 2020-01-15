@@ -54,7 +54,6 @@
                             android:layout_height="wrap_content"
                             android:text="必须先由小河川开始"
                             android:textColor="#fffff0e3"
-                            android:layout_marginTop="4dp"
                             android:textSize="13sp"
                             />
 
