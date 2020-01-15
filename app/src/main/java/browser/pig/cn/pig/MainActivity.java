@@ -33,6 +33,7 @@ import browser.pig.cn.pig.bean.HomeSelect;
 import browser.pig.cn.pig.login.LoginActivity;
 import browser.pig.cn.pig.min.MinActivity;
 import browser.pig.cn.pig.net.CommonCallback;
+import browser.pig.cn.pig.web.BrowserActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.my.library.net.BaseBean;
@@ -117,6 +118,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
     @Override
     public void initData() {
         requestPermission(Permission.Group.STORAGE,Permission.Group.CAMERA);
+        requestPermission(new String[]{"android.permission.WRITE_SETTINGS"});
     }
 
     private void fileDownLoad(String path) {
@@ -194,10 +196,13 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             startActivity(intent);
         }else {
             try {
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
-                intent.setData(content_url);
+//                Intent intent = new Intent();
+//                intent.setAction("android.intent.action.VIEW");
+//                Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
+//                intent.setData(content_url);
+//                startActivity(intent);
+                Intent intent = new Intent(this,BrowserActivity.class);
+                intent.putExtra("url",homeSelects.get(position).getUrl());
                 startActivity(intent);
 
             }catch (Exception e){
