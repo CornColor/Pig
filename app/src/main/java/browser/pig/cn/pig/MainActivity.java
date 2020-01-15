@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.liulishuo.filedownloader.FileDownloader;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.request.base.Request;
 import com.yanzhenjie.permission.Permission;
+import com.yidian.newssdk.exportui.NewsPortalFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,6 +64,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
     private List<HomeSelect> homeSelects;
     private RecyclerView rv_entrance;
     private EditText et_search;
+    private Fragment fragmentNavi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +92,14 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     //点击搜索的时候隐藏软键盘
                     hideKeyboard(et_search);
-                    // 在这里写搜索的操作,一般都是网络请求数据
                     try {
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.VIEW");
-                        Uri content_url = Uri.parse("https://www.baidu.com/s?wd="+et_search.getText().toString());//此处填链接
-                        intent.setData(content_url);
+//                Intent intent = new Intent();
+//                intent.setAction("android.intent.action.VIEW");
+//                Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
+//                intent.setData(content_url);
+//                startActivity(intent);
+                        Intent intent = new Intent(MainActivity.this,BrowserActivity.class);
+                        intent.putExtra("url","https://www.baidu.com/s?wd="+et_search.getText().toString());
                         startActivity(intent);
 
                     }catch (Exception e){
@@ -112,8 +118,13 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             startActivity(intent);
         }
 
+         fragmentNavi = new NewsPortalFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.portal_container, fragmentNavi)
+                .commitNowAllowingStateLoss();
 
     }
+
 
     @Override
     public void initData() {

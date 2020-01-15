@@ -35,5 +35,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile project(':mylibrary')
+    implementation 'com.yidian.android:feeds:+'
     implementation project(':x5')
+
+
+
 }
