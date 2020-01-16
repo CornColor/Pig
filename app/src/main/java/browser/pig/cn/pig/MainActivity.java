@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 //                intent.setData(content_url);
 //                startActivity(intent);
                         Intent intent = new Intent(MainActivity.this,BrowserActivity.class);
-                        intent.putExtra("url","https://www.baidu.com/s?wd="+et_search.getText().toString());
+                        intent.putExtra("url","https://www.sogou.com/web?query="+et_search.getText().toString());
                         startActivity(intent);
 
                     }catch (Exception e){
@@ -202,7 +202,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     @Override
     public void onHomeSelect(int position) {
-        if(!SPUtils.getInstance().contains("token")){
+        if(!SPUtils.getInstance().contains("token")&&position== 7){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }else {
