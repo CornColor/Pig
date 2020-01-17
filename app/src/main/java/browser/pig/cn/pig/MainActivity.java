@@ -36,6 +36,7 @@ import browser.pig.cn.pig.bean.HomeSelect;
 import browser.pig.cn.pig.login.LoginActivity;
 import browser.pig.cn.pig.min.MinActivity;
 import browser.pig.cn.pig.net.CommonCallback;
+import browser.pig.cn.pig.view.SideGroupLayout;
 import browser.pig.cn.pig.web.BrowserActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,7 +52,7 @@ import static browser.pig.cn.pig.net.ApiSearvice.SEND_REGISTER_CODE;
 import static browser.pig.cn.pig.net.ApiSearvice.UPDATA_ADDRESS;
 import static browser.pig.cn.pig.net.ApiSearvice.Y_CODE;
 
-public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHomeSelectClickListener {
+public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHomeSelectClickListener,SideGroupLayout.OnGroupScrollListener {
     private int[] ds = {R.drawable.icon_baidu, R.drawable.icon_xinlangshipin, R.drawable.icon_zhougongjiemeng,
             R.drawable.icon_baozoumanhua, R.drawable.icon_mianfeixiaoshuo, R.drawable.icon_jinrifengyun, R.drawable.icon_teixuejunshi,
             R.drawable.icon_zhuyouyou};
@@ -65,6 +66,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
     private RecyclerView rv_entrance;
     private EditText et_search;
     private Fragment fragmentNavi;
+    private SideGroupLayout sl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,8 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
         }
         homeSelectAdapter = new HomeSelectAdapter(this, homeSelects);
         homeSelectAdapter.setOnHomeSelectClickListener(this);
+
+        sl = findViewById(R.id.sl);
 
         rv_entrance = findViewById(R.id.rv_entrance);
         rv_entrance.setLayoutManager(new GridLayoutManager(this, 4));
@@ -292,6 +296,21 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+
+    }
+
+    @Override
+    public boolean isChildScroll() {
+        return false;
+    }
+
+    @Override
+    public boolean isGroupScroll() {
+        return false;
+    }
+
+    @Override
+    public void onScrollChanged(int left, int top) {
 
     }
 }

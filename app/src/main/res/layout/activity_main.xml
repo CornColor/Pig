@@ -115,14 +115,10 @@
         </RelativeLayout>
     </android.support.constraint.ConstraintLayout>
 
-
-
-
-
-
-        <LinearLayout
+        <browser.pig.cn.pig.view.SideGroupLayout
+            android:id="@+id/sl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             >
             <RelativeLayout
@@ -153,7 +149,7 @@
                 />
 
 
-        </LinearLayout>
+        </browser.pig.cn.pig.view.SideGroupLayout>
 
 
 
