@@ -6,7 +6,7 @@ package browser.pig.cn.pig.net;
  * created by dan
  */
 public interface ApiSearvice {
-    String HOST = "http://zhuyouyou.wanchao.org/api/";
+    String HOST = "http://zyyboss.shangmid.com/api/";
     /**
      * 登录
      */
