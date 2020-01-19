@@ -43,6 +43,7 @@ import butterknife.OnClick;
 import cn.my.library.net.BaseBean;
 import cn.my.library.ui.base.BaseActivity;
 import cn.my.library.utils.util.AppUtils;
+import cn.my.library.utils.util.DeviceUtils;
 import cn.my.library.utils.util.FilePathUtil;
 import cn.my.library.utils.util.SPUtils;
 import cn.my.library.utils.util.StringUtils;
@@ -58,9 +59,14 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             R.drawable.icon_zhuyouyou};
 
     private String[] ns = {"百度", "新浪视频", "周公解梦", "暴走漫画", "免费小说", "今日风云", "铁血军事", "猪悠悠"};
-    private String[] urls = {"https://www.baidu.com", "https://video.sina.cn/", "https://m.xzw.com/jiemeng/",
-            "http://baozoumanhua.com/", "http://www.quanshuwang.com", "http://top.baidu.com", "https://m.tiexue.net",
-            "http://izyy.hbyundao.com/zhuyouyouclient/index.html"};
+    private String[] urls = {"http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=baidu_android",
+            "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=sina_android",
+            "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=jm_android",
+            "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=mh_android",
+            "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=xs_android",
+            "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=fy_android",
+            "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=js_android",
+            buildZhu(SPUtils.getInstance().getString("phone"), DeviceUtils.getAndroidID())  };
     private HomeSelectAdapter homeSelectAdapter;
     private List<HomeSelect> homeSelects;
     private RecyclerView rv_entrance;
@@ -127,6 +133,14 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
                 .replace(R.id.portal_container, fragmentNavi)
                 .commitNowAllowingStateLoss();
 
+    }
+    public String buildZhu(String phone,String dvID){
+
+          String y = "";
+        if(SPUtils.getInstance().contains("invitation_code")){
+            y = "/"+SPUtils.getInstance().getString("invitation_code");
+        }
+        return "http://izyy.hbyundao.com/zhuyouyou_app_client/#/"+phone+"/"+dvID+y;
     }
 
 

@@ -75,6 +75,10 @@ public class LoginActivity extends BaseActivity {
                         SPUtils.getInstance().put("token", loginBean.getData().getToken());
                         SPUtils.getInstance().put("id", loginBean.getData().getId());
                         SPUtils.getInstance().put("phone", loginBean.getData().getPhone());
+                        if(!StringUtils.isEmpty(loginBean.getData().getInvitation_code())){
+                            SPUtils.getInstance().put("invitation_code",loginBean.getData().getInvitation_code());
+                        }
+
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

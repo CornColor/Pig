@@ -23,7 +23,15 @@ public class LoginBean extends BaseBean {
         private String token;
         private String id;
         private String phone;
+        private String invitation_code;
 
+        public String getInvitation_code() {
+            return invitation_code;
+        }
+
+        public void setInvitation_code(String invitation_code) {
+            this.invitation_code = invitation_code;
+        }
 
         public String getToken() {
             return token;
