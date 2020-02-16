@@ -98,7 +98,6 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="请输入验证码"
-            android:inputType="textPassword"
             android:lines="1"
             android:singleLine="true"
             android:layout_toLeftOf="@+id/tv_get_code"
@@ -197,7 +196,14 @@
             android:id="@+id/tv_xieyi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="《注册服务协议》"
+            android:text="《服务协议》"
+            android:textColor="#FE9C2D"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tv_zhengce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《隐私政策》"
             android:textColor="#FE9C2D"
             android:textSize="12sp" />
 

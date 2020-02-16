@@ -28,6 +28,8 @@ import com.yidian.newssdk.exportui.NewsPortalFragment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import browser.pig.cn.pig.adapter.HomeSelectAdapter;
 import browser.pig.cn.pig.bean.AppAdressBean;
@@ -40,6 +42,7 @@ import browser.pig.cn.pig.view.SideGroupLayout;
 import browser.pig.cn.pig.web.BrowserActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.my.library.eventbus.MessageEvent;
 import cn.my.library.net.BaseBean;
 import cn.my.library.ui.base.BaseActivity;
 import cn.my.library.utils.util.AppUtils;
@@ -54,11 +57,11 @@ import static browser.pig.cn.pig.net.ApiSearvice.UPDATA_ADDRESS;
 import static browser.pig.cn.pig.net.ApiSearvice.Y_CODE;
 
 public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHomeSelectClickListener,SideGroupLayout.OnGroupScrollListener {
-    private int[] ds = {R.drawable.icon_baidu, R.drawable.icon_xinlangshipin, R.drawable.icon_zhougongjiemeng,
-            R.drawable.icon_baozoumanhua, R.drawable.icon_mianfeixiaoshuo, R.drawable.icon_jinrifengyun, R.drawable.icon_teixuejunshi,
-            R.drawable.icon_zhuyouyou};
+    private int[] ds = {R.mipmap.icon_baidu, R.mipmap.icon_xinlangshipin, R.mipmap.icon_zhougongjiemeng,
+            R.mipmap.icon_baozoumanhua, R.mipmap.icon_mianfeixiaoshuo, R.mipmap.icon_jinrifengyun, R.mipmap.icon_teixuejunshi,
+            R.mipmap.icon_zhuyouyou};
 
-    private String[] ns = {"百度", "新浪视频", "周公解梦", "暴走漫画", "免费小说", "今日风云", "铁血军事", "猪悠悠"};
+    private String[] ns = {"百度", "视频电影", "娱乐八卦", "免费漫画", "免费小说", "今日风云", "创业情报", "实用工具"};
     private String[] urls = {"http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=baidu_android",
             "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=sina_android",
             "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=jm_android",
@@ -66,13 +69,24 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=xs_android",
             "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=fy_android",
             "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=js_android",
-            buildZhu(SPUtils.getInstance().getString("phone"), DeviceUtils.getAndroidID())  };
+            "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=zyy_android"
+
+    };
     private HomeSelectAdapter homeSelectAdapter;
     private List<HomeSelect> homeSelects;
     private RecyclerView rv_entrance;
     private EditText et_search;
     private Fragment fragmentNavi;
     private SideGroupLayout sl;
+    private String []search = {"兼职","挣钱","赚钱","猪悠悠","钱","赚","挣"};
+    private String zyy2 = "http://izyy.hbyundao.com/zhuyouyou_app_clientmanager/jump/jump?site=zyy2_android";
+    private Pattern httpPattern;
+
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,16 +114,50 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    //点击搜索的时候隐藏软键盘
                     hideKeyboard(et_search);
+                    for (int i = 0;i<search.length;i++){
+                        if(et_search.getText().toString().equals(search[i])){
+                            if(!SPUtils.getInstance().contains("token")){
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.putExtra("type",1);
+                                startActivity(intent);
+                            }else {
+                                try {
+                                    Intent intent = new Intent(MainActivity.this,BrowserActivity.class);
+                                    intent.putExtra("url",buildUrl(zyy2));
+                                    startActivity(intent);
+
+                                }catch (Exception e){
+
+                                }
+                            }
+                            return  true;
+
+
+                        }
+                    }
+                    //点击搜索的时候隐藏软键盘
+
                     try {
 //                Intent intent = new Intent();
 //                intent.setAction("android.intent.action.VIEW");
 //                Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
 //                intent.setData(content_url);
 //                startActivity(intent);
+
                         Intent intent = new Intent(MainActivity.this,BrowserActivity.class);
-                        intent.putExtra("url","https://www.sogou.com/web?query="+et_search.getText().toString());
+                        String uu = et_search.getText().toString();
+                        String uu1 = et_search.getText().toString();
+                        if(!uu.startsWith("http://")&&!uu.startsWith("https://")){
+                            uu="http://"+uu;
+                        }
+                        if(isHttpUrl(uu)){
+
+                            intent.putExtra("url",uu);
+                        }else {
+                            intent.putExtra("url","https://www.sogou.com/web?query="+et_search.getText().toString());
+                        }
+
                         startActivity(intent);
 
                     }catch (Exception e){
@@ -134,13 +182,51 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
                 .commitNowAllowingStateLoss();
 
     }
-    public String buildZhu(String phone,String dvID){
+    public  boolean isHttpUrl(String urls) {
+        boolean isurl = false;
+        String regex = "(((https|http)?://)?([a-z0-9]+[.])|(www.))"
+                + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";//设置正则表达式
 
-          String y = "";
-        if(SPUtils.getInstance().contains("invitation_code")){
-            y = "/"+SPUtils.getInstance().getString("invitation_code");
+        Pattern pat = Pattern.compile(regex.trim());//对比
+        Matcher mat = pat.matcher(urls.trim());
+        isurl = mat.matches();//判断是否匹配
+        if (isurl) {
+            isurl = true;
         }
-        return "http://izyy.hbyundao.com/zhuyouyou_app_client/#/"+phone+"/"+dvID+y;
+        return isurl;
+    }
+
+
+    @Override
+    public void onBusEvent(MessageEvent messageEvent) {
+        if(messageEvent.getCode() == 90){
+            try {
+                Intent intent = new Intent(MainActivity.this,BrowserActivity.class);
+                intent.putExtra("url",buildUrl(zyy2));
+                startActivity(intent);
+
+            }catch (Exception e){
+
+            }
+        }
+    }
+
+    public String buildUrl(String url){
+
+          StringBuilder stringBuilder = new StringBuilder(url);
+          if(SPUtils.getInstance().contains("token")){
+              if(SPUtils.getInstance().contains("phone")){
+                  stringBuilder.append("&zyy_tel="+SPUtils.getInstance().getString("phone"));
+
+              }
+              if(SPUtils.getInstance().contains("invitation_code")){
+                  stringBuilder.append("&zyy_invitationcode="+SPUtils.getInstance().getString("invitation_code"));
+
+              }
+          }
+
+        stringBuilder.append("&zyy_onlycode="+DeviceUtils.getAndroidID());
+        return stringBuilder.toString();
     }
 
 
@@ -220,25 +306,23 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     @Override
     public void onHomeSelect(int position) {
-        if(!SPUtils.getInstance().contains("token")&&position== 7){
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }else {
+
             try {
 //                Intent intent = new Intent();
 //                intent.setAction("android.intent.action.VIEW");
 //                Uri content_url = Uri.parse(homeSelects.get(position).getUrl());//此处填链接
 //                intent.setData(content_url);
 //                startActivity(intent);
+                String home = buildUrl(homeSelects.get(position).getUrl());
                 Intent intent = new Intent(this,BrowserActivity.class);
-                intent.putExtra("url",homeSelects.get(position).getUrl());
+                intent.putExtra("url",home);
                 startActivity(intent);
 
             }catch (Exception e){
 
             }
 
-        }
+
 
 
     }

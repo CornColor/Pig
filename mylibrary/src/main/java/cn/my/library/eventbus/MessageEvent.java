@@ -9,6 +9,8 @@ public class MessageEvent {
     private Integer code;
     private String msg;
 
+
+
     public MessageEvent(String msg, Integer code) {
         this.msg = msg;
         this.code = code;

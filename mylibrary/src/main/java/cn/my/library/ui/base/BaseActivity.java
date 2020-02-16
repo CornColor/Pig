@@ -189,8 +189,8 @@ public abstract class BaseActivity extends SupportActivity implements BaseView {
 
     public void showConfirmDialog(String msg, SweetAlertDialog.OnSweetClickListener listener){
         SweetAlertDialog dialog = new SweetAlertDialog(this);
-        dialog.setContentText(msg);
-        dialog.setTitleText("");
+        dialog.setContentText("");
+        dialog.setTitleText(msg);
         dialog.hidTtitle();
         dialog.setConfirmClickListener(listener);
         dialog.show();

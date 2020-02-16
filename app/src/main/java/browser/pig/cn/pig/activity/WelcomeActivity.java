@@ -19,6 +19,17 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     public WeakReferenceHandle mHandler = new WeakReferenceHandle(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (!this.isTaskRoot()) {
+            Intent intent = getIntent();
+            if (intent != null) {
+                String action = intent.getAction();
+                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
+                    finish();
+                    return;
+                }
+            }
+        }
         super.onCreate(savedInstanceState);
         // 不显示系统的标题栏，保证windowBackground和界面activity_main的大小一样，显示在屏幕不会有错位（去掉这一行试试就知道效果了）
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

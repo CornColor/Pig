@@ -6,6 +6,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tencent.smtt.sdk.WebView;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import browser.pig.cn.pig.MainActivity;
@@ -17,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.my.library.ui.base.BaseActivity;
 import cn.my.library.utils.util.SPUtils;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MinActivity extends BaseActivity {
 
@@ -36,7 +41,9 @@ public class MinActivity extends BaseActivity {
             Random random = new Random();
             float num = random.nextFloat() * 10;
             SPUtils.getInstance().put("cache", num);
-            tvCache.setText(num+"M");
+            DecimalFormat decimalFormat = new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+            String strPrice = decimalFormat.format(num);//返回字符串
+            tvCache.setText(strPrice+"M");
         }
     }
 
@@ -58,7 +65,6 @@ public class MinActivity extends BaseActivity {
             return "";
 
         }
-
         return mobile;
 
     }
@@ -74,6 +80,8 @@ public class MinActivity extends BaseActivity {
     }
 
 
+
+
     @OnClick({R.id.imageView3, R.id.relativeLayout3, R.id.relativeLayout4, R.id.relativeLayout6, R.id.btn_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -87,13 +95,20 @@ public class MinActivity extends BaseActivity {
             }
                 break;
             case R.id.relativeLayout4://清理缓存
-                SPUtils.getInstance().remove("cache");
-                tvCache.setText("0M");
-                showToast("清理完成");
+                showConfirmDialog("你确定要清除数据吗?", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        SPUtils.getInstance().remove("cache");
+                        tvCache.setText("0M");
+                        showToast("清理完成");
+                        sweetAlertDialog.dismiss();
+                    }
+                });
+
                 break;
             case R.id.relativeLayout6: {
                 Intent intent = new Intent(this, ShowActivity.class);
-                intent.putExtra("type", 2);
+                intent.putExtra("type", 1);
                 startActivity(intent);
             }
             break;
@@ -102,6 +117,7 @@ public class MinActivity extends BaseActivity {
                 SPUtils.getInstance().remove("token");
                 SPUtils.getInstance().remove("phone");
                 SPUtils.getInstance().remove("id");
+                SPUtils.getInstance().remove("invitation_code");
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

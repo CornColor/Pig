@@ -54,10 +54,10 @@ public class ModifyPasswordActivity extends BaseActivity {
     public void initPresenter() {
 
     }
-    private void modify(String phone, String password, String pre_password) {
+    private void modify(String password_check, String password, String pre_password) {
         OkGo.<BaseBean>post(MODIFY_PASSWORD)
                 .headers("authkey",SPUtils.getInstance().getString("token"))
-                .params("phone", phone)
+                .params("password_check", password_check)
                 .params("password", password)
                 .params("pre_password", pre_password)
                 .execute(new CommonCallback<BaseBean>(BaseBean.class) {
@@ -109,6 +109,7 @@ public class ModifyPasswordActivity extends BaseActivity {
             case R.id.btn_login:
             {
                 String phone = SPUtils.getInstance().getString("phone");
+
                 String old = etOldPassword.getText().toString();
                 if (old == null || old.length() < 0) {
                     showToast("请输入旧密码");
@@ -129,7 +130,7 @@ public class ModifyPasswordActivity extends BaseActivity {
                     return;
                 }
 
-                modify(phone,password,old);
+                modify(qpassword,password,old);
 
             }
                 break;

@@ -9,14 +9,18 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
 
+import org.greenrobot.eventbus.EventBus;
+
 import browser.pig.cn.pig.MainActivity;
 import browser.pig.cn.pig.R;
+import browser.pig.cn.pig.ShowActivity;
 import browser.pig.cn.pig.net.CommonCallback;
 import browser.pig.cn.pig.register.FindPasswordActivity;
 import browser.pig.cn.pig.register.RegisterActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.my.library.eventbus.MessageEvent;
 import cn.my.library.ui.base.BaseActivity;
 import cn.my.library.utils.util.SPUtils;
 import cn.my.library.utils.util.StringUtils;
@@ -30,11 +34,15 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.et_password)
     EditText etPassword;
 
+    private int type = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        type = getIntent().getIntExtra("type", 0);
+
     }
 
     @Override
@@ -75,14 +83,20 @@ public class LoginActivity extends BaseActivity {
                         SPUtils.getInstance().put("token", loginBean.getData().getToken());
                         SPUtils.getInstance().put("id", loginBean.getData().getId());
                         SPUtils.getInstance().put("phone", loginBean.getData().getPhone());
-                        if(!StringUtils.isEmpty(loginBean.getData().getInvitation_code())){
-                            SPUtils.getInstance().put("invitation_code",loginBean.getData().getInvitation_code());
+                        if (!StringUtils.isEmpty(loginBean.getData().getInvitation_code())) {
+                            SPUtils.getInstance().put("invitation_code", loginBean.getData().getInvitation_code());
                         }
 
+                        if (type == 1) {
+                            EventBus.getDefault().post(new MessageEvent("跳转猪悠悠", 90));
+                            finish();
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        }
+
                     }
 
                     @Override
@@ -137,5 +151,25 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.close)
     public void onViewClicked() {
         finish();
+    }
+
+    @OnClick({R.id.tv_xieyi, R.id.tv_zhengce})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_xieyi:
+            {
+                Intent intent = new Intent(this, ShowActivity.class);
+                intent.putExtra("type", 2);
+                startActivity(intent);
+            }
+                break;
+            case R.id.tv_zhengce:
+            {
+                Intent intent = new Intent(this, ShowActivity.class);
+                intent.putExtra("type", 3);
+                startActivity(intent);
+            }
+                break;
+        }
     }
 }
