@@ -1,19 +1,16 @@
-package com.example.x5.utils;
+package browser.pig.cn.pig.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
 
-import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+
+import browser.pig.cn.pig.ZpWebChromeClient;
 
 public class X5WebView extends WebView {
 	TextView title;
@@ -26,15 +23,21 @@ public class X5WebView extends WebView {
 			return true;
 		}
 	};
+	private ZpWebChromeClient webChromeClient;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	public X5WebView(Context arg0, AttributeSet arg1) {
 		super(arg0, arg1);
 		this.setWebViewClient(client);
-		// this.setWebChromeClient(chromeClient);
+
 		// WebStorage webStorage = WebStorage.getInstance();
 		initWebViewSettings();
 		this.getView().setClickable(true);
+	}
+
+	public void setWebChromeClient23(ZpWebChromeClient webChromeClient) {
+		this.webChromeClient = webChromeClient;
+		this.setWebChromeClient(this.webChromeClient);
 	}
 
 	private void initWebViewSettings() {
@@ -91,5 +94,7 @@ public class X5WebView extends WebView {
 		super(arg0);
 		setBackgroundColor(85621);
 	}
-
+	public void setOpenFileChooserCallBack(ZpWebChromeClient.OpenFileChooserCallBack callBack) {
+		webChromeClient.setOpenFileChooserCallBack(callBack);
+	}
 }

@@ -1,4 +1,4 @@
-package com.example.x5.utils;
+package browser.pig.cn.pig.utils;
 
 public interface WebViewJavaScriptFunction {
 
