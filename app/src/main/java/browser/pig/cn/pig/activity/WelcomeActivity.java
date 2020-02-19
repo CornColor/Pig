@@ -23,7 +23,7 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     public final int MSG_FINISH_LAUNCHERACTIVITY = 500;
     public WeakReferenceHandle mHandler = new WeakReferenceHandle(this);
     private RelativeLayout rl_xieyi;
-    private Button btn_ok;
+    private Button btn_ok,btn_no;
     private TextView tv_xieyi,tv_zhengce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,14 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
                 Intent intent = new Intent(WelcomeActivity.this, ShowActivity.class);
                 intent.putExtra("type", 3);
                 startActivity(intent);
+            }
+        });
+
+        btn_no = findViewById(R.id.btn_no);
+        btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
