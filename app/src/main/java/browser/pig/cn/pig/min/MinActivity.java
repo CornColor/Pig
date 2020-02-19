@@ -6,16 +6,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.tencent.smtt.sdk.WebView;
-
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Random;
 
 import browser.pig.cn.pig.MainActivity;
 import browser.pig.cn.pig.R;
 import browser.pig.cn.pig.ShowActivity;
-import browser.pig.cn.pig.login.LoginActivity;
+import browser.pig.cn.pig.activity.WelcomeActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,7 +26,7 @@ public class MinActivity extends BaseActivity {
     TextView mPhone;
     @Bind(R.id.tv_cache)
     TextView tvCache;
-
+    private TextView tv_xieyi,tv_zhengce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +40,27 @@ public class MinActivity extends BaseActivity {
             SPUtils.getInstance().put("cache", num);
             DecimalFormat decimalFormat = new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
             String strPrice = decimalFormat.format(num);//返回字符串
-            tvCache.setText(strPrice+"M");
+            tvCache.setText(strPrice + "M");
         }
+        tv_xieyi = findViewById(R.id.tv_xieyi);
+        tv_xieyi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MinActivity.this, ShowActivity.class);
+                intent.putExtra("type", 2);
+                startActivity(intent);
+            }
+        });
+
+        tv_zhengce = findViewById(R.id.tv_zhengce);
+        tv_zhengce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MinActivity.this, ShowActivity.class);
+                intent.putExtra("type", 3);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -80,8 +96,6 @@ public class MinActivity extends BaseActivity {
     }
 
 
-
-
     @OnClick({R.id.imageView3, R.id.relativeLayout3, R.id.relativeLayout4, R.id.relativeLayout6, R.id.btn_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -90,10 +104,10 @@ public class MinActivity extends BaseActivity {
                 break;
             case R.id.relativeLayout3://修改密码
             {
-                Intent intent = new Intent(MinActivity.this,ModifyPasswordActivity.class);
+                Intent intent = new Intent(MinActivity.this, ModifyPasswordActivity.class);
                 startActivity(intent);
             }
-                break;
+            break;
             case R.id.relativeLayout4://清理缓存
                 showConfirmDialog("你确定要清除数据吗?", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -112,18 +126,19 @@ public class MinActivity extends BaseActivity {
                 startActivity(intent);
             }
             break;
-            case R.id.btn_exit:
-            {
+            case R.id.btn_exit: {
                 SPUtils.getInstance().remove("token");
                 SPUtils.getInstance().remove("phone");
                 SPUtils.getInstance().remove("id");
                 SPUtils.getInstance().remove("invitation_code");
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }
-                break;
+            break;
         }
     }
+
+
 }

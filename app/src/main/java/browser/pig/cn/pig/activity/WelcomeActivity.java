@@ -5,10 +5,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import browser.pig.cn.pig.MainActivity;
 import browser.pig.cn.pig.R;
+import browser.pig.cn.pig.ShowActivity;
 import browser.pig.cn.pig.login.LoginActivity;
 import cn.my.library.other.WeakReferenceHandle;
 import cn.my.library.ui.base.BaseActivity;
@@ -17,6 +22,9 @@ import cn.my.library.utils.util.SPUtils;
 public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     public final int MSG_FINISH_LAUNCHERACTIVITY = 500;
     public WeakReferenceHandle mHandler = new WeakReferenceHandle(this);
+    private RelativeLayout rl_xieyi;
+    private Button btn_ok;
+    private TextView tv_xieyi,tv_zhengce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -36,7 +44,37 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         // 注意：添加3秒睡眠，以确保黑屏一会儿的效果明显，在项目应用要去掉这3秒睡眠
         setContentView(R.layout.activity_welcome);
         // 停留3秒后发送消息，跳转到MainActivity
-        mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 3000);
+       // mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 3000);
+
+        rl_xieyi = findViewById(R.id.rl_xieyi);
+        btn_ok = findViewById(R.id.btn_ok);
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl_xieyi.setVisibility(View.GONE);
+                mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 2000);
+            }
+        });
+        tv_xieyi = findViewById(R.id.tv_xieyi);
+        tv_xieyi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeActivity.this, ShowActivity.class);
+                intent.putExtra("type", 2);
+                startActivity(intent);
+            }
+        });
+
+        tv_zhengce = findViewById(R.id.tv_zhengce);
+        tv_zhengce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeActivity.this, ShowActivity.class);
+                intent.putExtra("type", 3);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
