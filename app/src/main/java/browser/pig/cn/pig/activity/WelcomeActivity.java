@@ -47,12 +47,19 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
        // mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 3000);
 
         rl_xieyi = findViewById(R.id.rl_xieyi);
+        if(!SPUtils.getInstance().contains("xy")){
+            rl_xieyi.setVisibility(View.VISIBLE);
+        }else {
+            rl_xieyi.setVisibility(View.GONE);
+            mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 2000);
+        }
         btn_ok = findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rl_xieyi.setVisibility(View.GONE);
                 mHandler.sendEmptyMessageDelayed(MSG_FINISH_LAUNCHERACTIVITY, 2000);
+                SPUtils.getInstance().put("xy","1");
             }
         });
         tv_xieyi = findViewById(R.id.tv_xieyi);

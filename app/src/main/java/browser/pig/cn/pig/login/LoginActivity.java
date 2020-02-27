@@ -1,5 +1,6 @@
 package browser.pig.cn.pig.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -59,7 +60,10 @@ public class LoginActivity extends BaseActivity {
     public void initPresenter() {
 
     }
-
+    public static void login(Activity activity){
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
+    }
     private void login(String phone, String password) {
         OkGo.<LoginBean>post(LOGIN)
                 .params("phone", phone)

@@ -1,5 +1,6 @@
 package browser.pig.cn.pig.net;
 
+import android.app.Activity;
 import android.content.Intent;
 
 
@@ -12,8 +13,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+import browser.pig.cn.pig.login.LoginActivity;
 import cn.my.library.net.BaseBean;
+import cn.my.library.utils.util.AppUtils;
+import cn.my.library.utils.util.SPUtils;
 import cn.my.library.utils.util.StringUtils;
+import cn.my.library.utils.util.Utils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -64,9 +69,12 @@ public abstract class CommonCallback<T extends BaseBean> extends AbsCallback<T> 
                     jsonObject = new JSONObject(json);
                     if (jsonObject.getInt("code") != 0) {
                         if(jsonObject.getInt("code") == 1001){
-
                             onFailure(jsonObject.getInt("code")+"",jsonObject.getString("msg"));
-
+                            SPUtils.getInstance().remove("token");
+                            SPUtils.getInstance().remove("phone");
+                            SPUtils.getInstance().remove("id");
+                            SPUtils.getInstance().remove("invitation_code");
+                            LoginActivity.login((Activity) Utils.getTopActivityOrApp());
                         }else {
                             onFailure(jsonObject.getInt("code")+"",jsonObject.getString("msg"));
                         }

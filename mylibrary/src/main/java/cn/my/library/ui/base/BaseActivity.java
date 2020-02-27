@@ -202,9 +202,13 @@ public abstract class BaseActivity extends SupportActivity implements BaseView {
         if(isDeath()){
             return;
         }
-        dialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
 
-                .setTitleText(msg);
+        if(dialog == null){
+            dialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
+                    .setTitleText(msg);
+        }else {
+            dialog.setTitleText(msg);
+        }
         dialog.show();
 //        if (msg != null || !"".equals(msg)) {
 //            ProgressDialog dialog;

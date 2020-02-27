@@ -1,10 +1,14 @@
 package browser.pig.cn.pig;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -52,6 +56,8 @@ import cn.my.library.utils.util.SPUtils;
 import cn.my.library.utils.util.StringUtils;
 import freemarker.template.utility.StringUtil;
 
+import static android.Manifest.permission.REQUEST_INSTALL_PACKAGES;
+import static android.Manifest.permission.WRITE_SETTINGS;
 import static browser.pig.cn.pig.net.ApiSearvice.SEND_REGISTER_CODE;
 import static browser.pig.cn.pig.net.ApiSearvice.UPDATA_ADDRESS;
 import static browser.pig.cn.pig.net.ApiSearvice.Y_CODE;
@@ -233,8 +239,27 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
     @Override
     public void initData() {
         requestPermission(Permission.Group.STORAGE,Permission.Group.CAMERA);
-        requestPermission(new String[]{"android.permission.WRITE_SETTINGS"});
+        requestPermission(new String[]{WRITE_SETTINGS,REQUEST_INSTALL_PACKAGES});
+
     }
+    private void detectionVersions(File file) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+            //获取是否有权限
+            boolean jurisdiction = getPackageManager().canRequestPackageInstalls();
+            if (jurisdiction) {
+                //开始安装
+                AppUtils.installApp(file);
+            } else {
+                //没有权限,申请权限
+                ActivityCompat.requestPermissions((Activity) MainActivity.this, new String[]{REQUEST_INSTALL_PACKAGES}, 3);
+            }
+        } else {
+            //开始安装
+            AppUtils.installApp(file);
+        }
+
+    }
+
 
     private void fileDownLoad(String path) {
         if(StringUtils.isEmpty(path)){
@@ -250,6 +275,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
                     @Override
                     protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                     //   showProgressDialog(soFarBytes+"/"+totalBytes);
 
                     }
 
@@ -257,7 +283,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
                     protected void completed(BaseDownloadTask task) {
                         try{
                             if(!StringUtils.isEmpty(task.getPath())){
-                                AppUtils.installApp(task.getPath());
+                                detectionVersions(new File(task.getPath()));
                             }
                         }catch (Exception e){
 
@@ -328,11 +354,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
     }
 
     private void banben(){
-        if(!SPUtils.getInstance().contains("token")){
-            return;
-        }
         OkGo.<BanBenBean>post(Y_CODE)
-                .headers("authkey",SPUtils.getInstance().getString("token"))
                 .execute(new CommonCallback<BanBenBean>(BanBenBean.class) {
 
                     @Override
@@ -358,12 +380,11 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
     @Override
     protected void onResume() {
         super.onResume();
-        banben();
+
     }
 
     private void updata(){
         OkGo.<AppAdressBean>post(UPDATA_ADDRESS)
-                .headers("authkey",SPUtils.getInstance().getString("token"))
                 .execute(new CommonCallback<AppAdressBean>(AppAdressBean.class) {
 
                     @Override
