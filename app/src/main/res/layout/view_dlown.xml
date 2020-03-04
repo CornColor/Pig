@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:paddingTop="30dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape__02_4"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical"
+
+
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/qidongye1"
+                    android:layout_gravity="center_horizontal"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="版本更新"
+                    android:textColor="#000000"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="18sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="猪悠悠浏览器新版来了，"
+                    android:textColor="#555555"
+                    android:layout_marginTop="14dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="15sp"
+                    />
+
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀您马上来体验"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#555555"
+                    android:textSize="15sp"
+                    android:layout_marginTop="8dp"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.75dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/line_gray"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    >
+                    <Button
+                        android:id="@+id/btn_no"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:text="稍后再说"
+                        android:textSize="18sp"
+                        android:textColor="@color/gray_btn_bg_color"
+                        />
+                    <View
+                        android:layout_width="0.75dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/gray_btn_bg_color"
+                        />
+                    <Button
+                        android:id="@+id/btn_ok"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="立即下载"
+                        android:textSize="18sp"
+                        android:background="@null"
+                        android:textColor="@color/them"
+                        />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+
+</RelativeLayout>

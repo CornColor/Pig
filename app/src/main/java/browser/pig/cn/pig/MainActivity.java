@@ -1,6 +1,7 @@
 package browser.pig.cn.pig;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
+import com.luck.picture.lib.dialog.CustomDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.request.base.Request;
 import com.yanzhenjie.permission.Permission;
@@ -42,6 +44,7 @@ import browser.pig.cn.pig.bean.HomeSelect;
 import browser.pig.cn.pig.login.LoginActivity;
 import browser.pig.cn.pig.min.MinActivity;
 import browser.pig.cn.pig.net.CommonCallback;
+import browser.pig.cn.pig.view.CoustomDialog;
 import browser.pig.cn.pig.view.SideGroupLayout;
 import browser.pig.cn.pig.web.BrowserActivity;
 import butterknife.ButterKnife;
@@ -243,20 +246,21 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
     }
     private void detectionVersions(File file) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            //获取是否有权限
-            boolean jurisdiction = getPackageManager().canRequestPackageInstalls();
-            if (jurisdiction) {
-                //开始安装
-                AppUtils.installApp(file);
-            } else {
-                //没有权限,申请权限
-                ActivityCompat.requestPermissions((Activity) MainActivity.this, new String[]{REQUEST_INSTALL_PACKAGES}, 3);
-            }
-        } else {
-            //开始安装
-            AppUtils.installApp(file);
-        }
+        AppUtils.installApp(file);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            //获取是否有权限
+//            boolean jurisdiction = getPackageManager().canRequestPackageInstalls();
+//            if (jurisdiction) {
+//                //开始安装
+//                AppUtils.installApp(file);
+//            } else {
+//                //没有权限,申请权限
+//                ActivityCompat.requestPermissions((Activity) MainActivity.this, new String[]{REQUEST_INSTALL_PACKAGES}, 3);
+//            }
+//        } else {
+//            //开始安装
+//            AppUtils.installApp(file);
+//        }
 
     }
 
@@ -368,7 +372,20 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
                         String banben = banBenBean.getData().getData();
                         String appVersionName = AppUtils.getAppVersionName();
                         if(!appVersionName.equals(banben)){
-                           updata();
+                            CoustomDialog.create(MainActivity.this, new CoustomDialog.OnMultiClickListener() {
+                                @Override
+                                public void onConfirm(Dialog dialog, View view) {
+                                    updata();
+                                    dialog.dismiss();
+                                }
+
+                                @Override
+                                public void onCancel(Dialog dialog, View view) {
+                                    dialog.dismiss();
+
+                                }
+                            }).show();
+
                         }
 
                     }
@@ -394,6 +411,7 @@ public class MainActivity extends BaseActivity implements HomeSelectAdapter.OnHo
 
                     @Override
                     public void onSuccess(AppAdressBean banBenBean) {
+                        showToast("正在下载最新版本");
                         String banben = banBenBean.getData().getData();
                         fileDownLoad(banben);
 
